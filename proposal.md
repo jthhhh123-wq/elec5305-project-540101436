@@ -1,43 +1,51 @@
 # Project Proposal: Keyword Spotting in Noisy Environments
 
 ## 1. General Topic
-This project will focus on **keyword spotting (KWS)**, which refers to the detection of specific spoken keywords from continuous audio streams. KWS is widely used in applications such as voice assistants, smart home devices, and hands-free interfaces.  
-A common challenge for KWS systems is **robustness in noisy environments** (e.g., background chatter, traffic, or music). The project will investigate approaches to improve performance under such conditions, leveraging available datasets and baseline models.
+This project will focus on **keyword spotting (KWS)**, which refers to the detection of specific spoken keywords from continuous audio streams. KWS is widely used in applications such as voice assistants (e.g., “Hey Siri”), smart home devices, and hands-free interfaces.  
+
+A key challenge for KWS systems is **robustness in noisy environments**, where background sounds such as conversation, traffic, or music can significantly reduce recognition accuracy. Improving the resilience of KWS systems is critical for reliable deployment in real-world applications. This project will explore general strategies for building and evaluating noise-robust KWS systems, with a focus on balancing accuracy and efficiency.
 
 ## 2. Research Question
-- How can keyword spotting models maintain high accuracy when exposed to different types of noise?  
-- What methods of feature extraction, data augmentation, or model architecture can improve robustness without significantly increasing computational cost?  
+The project aims to address the following research questions:
+- How can keyword spotting models maintain high accuracy when exposed to different types and levels of noise?  
+- What kinds of input features (e.g., MFCCs, spectrograms, learned embeddings) are more robust to noise distortions?  
+- To what extent can data augmentation (e.g., adding artificial noise during training) improve generalization to unseen noisy conditions?  
+- How do different model architectures (e.g., CNNs, RNNs, Transformer-based models) compare in terms of robustness and computational cost?  
 
 ## 3. Proposed Approach
-The proposed approach will explore KWS systems in a general framework:
-- **Dataset**: Use standard corpora such as Google Speech Commands or other publicly available datasets.  
-- **Features**: Investigate audio representations such as MFCCs, spectrograms, or learned embeddings.  
-- **Models**: Consider a range of architectures, from traditional classifiers (e.g., CNN, RNN) to more recent deep learning models.  
-- **Noise Handling**: Explore techniques like data augmentation, noise injection, or specialized training objectives to improve resilience.  
+The proposed approach will explore KWS systems in a **general framework**:
+- **Dataset**: Use standard corpora such as the Google Speech Commands dataset or other publicly available datasets for training and evaluation.  
+- **Features**: Investigate different audio representations such as MFCCs, log-mel spectrograms, and possibly pre-trained embeddings from self-supervised speech models.  
+- **Models**: Consider a range of architectures, from lightweight CNN-based models for efficiency, to recurrent or transformer-based models that capture temporal patterns more effectively.  
+- **Noise Handling**: Explore approaches such as noise injection during training, signal enhancement preprocessing, and evaluation across different SNR conditions.  
+- **Baseline vs. Extended Approaches**: Start with a simple baseline model, then gradually extend by adding noise-robust strategies and comparing performance.  
 
-At this stage, the focus will be on **broad exploration** rather than committing to a single detailed solution. Specific implementations will be selected later based on feasibility and available resources.
+At this stage, the focus will be on **broad exploration** rather than committing to a single detailed solution. Specific implementations will be selected later based on feasibility, available resources, and initial experimental results.
 
 ## 4. Evaluation Plan
 The project will adopt both objective and subjective evaluation methods:
 - **Accuracy / F1-score**: Measure keyword recognition performance on clean vs. noisy test sets.  
-- **Confusion matrix analysis**: Examine which keywords are most affected by noise.  
-- **Robustness testing**: Test models under different noise levels (e.g., varying SNR conditions).  
-- (Optional) **Efficiency metrics**: Compare computation and memory usage across models.  
+- **Confusion matrix analysis**: Identify which keywords are most affected by noise and common misclassifications.  
+- **Robustness testing**: Evaluate system performance under controlled noise levels (e.g., at 20 dB, 10 dB, 0 dB SNR).  
+- **Efficiency metrics**: (Optional) Compare computation time and memory usage to assess deployability on resource-limited devices.  
+- **Qualitative evaluation**: Listen to selected noisy audio samples to check whether results match subjective human judgment.  
 
 ## 5. Expected Outcome
-- Identification of key factors influencing KWS performance under noise.  
-- A baseline system that demonstrates acceptable accuracy in clean conditions, with analysis of performance drops under noise.  
-- Insights into potential improvement strategies, which can be further explored in the final project phase.  
+- A baseline KWS system trained on a standard dataset and evaluated under both clean and noisy conditions.  
+- Quantitative analysis of how noise degrades recognition accuracy, with insights into the most challenging noise scenarios.  
+- A comparison of different techniques (e.g., data augmentation, alternative features) that may improve noise robustness.  
+- Practical lessons on the trade-off between accuracy and efficiency in KWS systems, with suggestions for future improvements.  
 
 ## 6. Project Plan
-- **Week 5**: Conduct literature review on keyword spotting (KWS) and collect baseline GitHub implementations and datasets (e.g., Google Speech Commands).  
-- **Week 6**: Implement a simple baseline KWS system and verify functionality on clean data.  
+- **Week 5**: Conduct literature review on keyword spotting (KWS) and survey existing GitHub implementations. Collect datasets (e.g., Google Speech Commands).  
+- **Week 6**: Implement a simple baseline KWS system and test its accuracy on clean audio.  
 - **Week 7**: Introduce noisy conditions (add background noise, vary SNR levels) and evaluate baseline robustness.  
-- **Week 8**: Explore possible improvements, such as data augmentation or alternative feature extraction methods.  
-- **Week 9**: Test and compare improved models against the baseline, focusing on accuracy and robustness.  
-- **Week 10**: Consolidate results, prepare analysis, and finalize the proposal report/presentation.  
+- **Week 8**: Explore improvements such as data augmentation, noise-invariant features, or preprocessing techniques.  
+- **Week 9**: Test and compare improved models against the baseline, focusing on accuracy, robustness, and possible efficiency.  
+- **Week 10**: Consolidate results, summarize findings, and prepare the final project report and presentation.  
 
 ## 7. References
-- Google Speech Commands Dataset (Warden, 2018).  
-- TensorFlow and PyTorch implementations of keyword spotting (various GitHub repositories).  
-- Research papers and GitHub resources on noise-robust speech recognition and KWS.  
+- Warden, P. (2018). Speech Commands: A dataset for limited-vocabulary speech recognition. Google Research.  
+- TensorFlow and PyTorch GitHub repositories on keyword spotting.  
+- Research literature on noise-robust speech recognition and data augmentation in audio processing.  
+
