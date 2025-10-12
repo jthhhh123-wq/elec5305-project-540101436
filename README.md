@@ -77,20 +77,12 @@ At higher noise levels (0 dB and –5 dB), misclassification occurs between “g
 
 | SNR (dB) | Confusion Matrix |
 |-----------|-----------------|
-| 30 | ![](results/confusion_30dB.png) |
-| 20 | ![](results/confusion_20dB.png) |
-| 10 | ![](results/confusion_10dB.png) |
-| 0  | ![](results/confusion_0dB.png) |
-| –5 | ![](results/confusion_-5dB.png) |
+| 30 | <img src="results/confusion_30dB.png" width="200"/> |
+| 20 | <img src="results/confusion_20dB.png" width="200"/> |
+| 10 | <img src="results/confusion_10dB.png" width="200"/> |
+| 0  | <img src="results/confusion_0dB.png" width="200"/> |
+| -5 | <img src="results/confusion_-5dB.png" width="200"/> |
 
-
-| SNR | Confusion Matrix |
-|------|------------------|
-| **30 dB** | ![Confusion 30dB](results_feedback2/confusion_30dB.png) |
-| **20 dB** | ![Confusion 20dB](results_feedback2/confusion_20dB.png) |
-| **10 dB** | ![Confusion 10dB](results_feedback2/confusion_10dB.png) |
-| **0 dB**  | ![Confusion 0dB](results_feedback2/confusion_0dB.png) |
-| **−5 dB** | ![Confusion -5dB](results_feedback2/confusion_-5dB.png) |
 
 ## Current Discussion  
 The current phase demonstrates that while the baseline CNN achieves ~69 % accuracy on clean data, its performance **declines rapidly under strong noise**—a known issue in small-footprint KWS (Li et al., 2022).  
