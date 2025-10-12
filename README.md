@@ -11,8 +11,6 @@ The current stage (Feedback 2 submission) focuses on:
 
 Further development (for the final submission) will include **data augmentation**, **improved architectures**, and **additional evaluation scenarios**.
 
----
-
 ## Current Repository Structure  
 
 | File | Description |
@@ -25,7 +23,6 @@ Further development (for the final submission) will include **data augmentation*
 | `results_feedback2/` | Contains generated plots (accuracy vs. SNR and confusion matrices). |
 | `speech_commands_v0.02/` | Dataset directory with 10 selected command classes. |
 
----
 
 ## Current Workflow  
 
@@ -56,7 +53,6 @@ This script evaluates recognition accuracy across **SNR = 30, 20, 10, 0, −5 dB
 - `accuracy_vs_snr.png` (overall trend)  
 - `confusion_*.png` (detailed per-SNR matrices)
 
----
 
 ## Current Results  
 
@@ -68,10 +64,22 @@ This script evaluates recognition accuracy across **SNR = 30, 20, 10, 0, −5 dB
 | 0  | 46.2 |
 | −5 | 37.8 |
 
-- **Figure 1 – Accuracy vs. SNR:** The model performs well in clean/mild noise but degrades sharply below 10 dB.  
-- **Figures 2–6 – Confusion Matrices:** Increasing noise leads to confusion between *“go/no”* and *“on/off”*, confirming reduced robustness.
+**Figure 1 – Accuracy vs. SNR**  
+The model performs well in clean or mild noise but degrades sharply below 10 dB.
 
----
+![Accuracy vs SNR](results_feedback2/accuracy_vs_snr.png)
+
+
+**Figures 2–6 – Confusion Matrices at Different Noise Levels**  
+Increasing noise leads to confusion between *“go/no”* and *“on/off”*, confirming reduced robustness.
+
+| SNR | Confusion Matrix |
+|------|------------------|
+| **30 dB** | ![Confusion 30dB](results_feedback2/confusion_30dB.png) |
+| **20 dB** | ![Confusion 20dB](results_feedback2/confusion_20dB.png) |
+| **10 dB** | ![Confusion 10dB](results_feedback2/confusion_10dB.png) |
+| **0 dB**  | ![Confusion 0dB](results_feedback2/confusion_0dB.png) |
+| **−5 dB** | ![Confusion -5dB](results_feedback2/confusion_-5dB.png) |
 
 ## Current Discussion  
 The current phase demonstrates that while the baseline CNN achieves ~69 % accuracy on clean data, its performance **declines rapidly under strong noise**—a known issue in small-footprint KWS (Li et al., 2022).  
@@ -82,7 +90,6 @@ The current phase demonstrates that while the baseline CNN achieves ~69 % accura
 - Explore **attention-based CNN or GRU** architectures to improve temporal robustness.  
 - Extend evaluation to **real environmental noise** beyond Gaussian conditions.  
 
----
 
 ## References  
 - Li, J., Deng, L., & Gong, Y. (2022). *Noise-Robust Automatic Speech Recognition: A Review.* IEEE/ACM T-ASLP, 30, 1532–1550.  
@@ -90,7 +97,6 @@ The current phase demonstrates that while the baseline CNN achieves ~69 % accura
 - Reddy, C. K. A. et al. (2021). *DNS Challenge: Improving Noise Suppression Models.* Interspeech 2021.  
 - Warden, P. (2018). *Speech Commands: A Dataset for Limited-Vocabulary Speech Recognition.* arXiv:1804.03209.  
 
----
 
 ## Author  
 **Jianing Zhang (SID 540101436)**  
