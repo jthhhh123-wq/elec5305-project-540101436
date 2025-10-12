@@ -64,14 +64,25 @@ This script evaluates recognition accuracy across **SNR = 30, 20, 10, 0, −5 dB
 | 0  | 46.2 |
 | −5 | 37.8 |
 
-**Figure 1 – Accuracy vs. SNR**  
-The model performs well in clean or mild noise but degrades sharply below 10 dB.
+### Figure 1. Accuracy vs SNR
+The model performs well under clean/mild noise but degrades sharply below 10 dB.
 
-![Accuracy vs SNR](results_feedback2/accuracy_vs_snr.png)
+![Accuracy vs SNR](results/accuracy_vs_snr.png)
 
+---
 
-**Figures 2–6 – Confusion Matrices at Different Noise Levels**  
-Increasing noise leads to confusion between *“go/no”* and *“on/off”*, confirming reduced robustness.
+### Figure 2–6. Confusion Matrices under Different Noise Levels
+
+At higher noise levels (0 dB and –5 dB), misclassification occurs between “go/no” and “on/off”, confirming reduced robustness.
+
+| SNR (dB) | Confusion Matrix |
+|-----------|-----------------|
+| 30 | ![](results/confusion_30dB.png) |
+| 20 | ![](results/confusion_20dB.png) |
+| 10 | ![](results/confusion_10dB.png) |
+| 0  | ![](results/confusion_0dB.png) |
+| –5 | ![](results/confusion_-5dB.png) |
+
 
 | SNR | Confusion Matrix |
 |------|------------------|
