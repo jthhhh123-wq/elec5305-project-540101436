@@ -83,6 +83,50 @@ At higher noise levels (0 dB and –5 dB), misclassification occurs between “g
 | 0  | <img src="results/confusion_0dB.png" width="200"/> |
 | -5 | <img src="results/confusion_-5dB.png" width="200"/> |
 
+##  Current Results
+
+The model was trained for **20 epochs** with a batch size of **128** and a learning rate of **1e-3**.  
+Evaluation was performed under varying **Signal-to-Noise Ratios (SNRs)** ranging from **30 dB to –5 dB**.  
+Accuracy decreases progressively as the background noise increases.
+
+| **SNR (dB)** | **Accuracy (%)** |
+|:-------------:|:----------------:|
+| 30 | 68.5 |
+| 20 | 63.4 |
+| 10 | 56.7 |
+| 0  | 46.2 |
+| –5 | 37.8 |
+
+---
+
+###  Accuracy vs SNR
+
+The overall trend shows a clear decline in recognition accuracy as SNR decreases below 10 dB.
+
+<img src="results/accuracy_vs_snr.png" width="450"/>
+
+---
+
+###  Confusion Matrices under Different Noise Levels
+
+**30 dB (Clean Condition)**
+<img src="results/confusion_30dB.png" width="300"/>
+
+**20 dB**
+<img src="results/confusion_20dB.png" width="300"/>
+
+**10 dB**
+<img src="results/confusion_10dB.png" width="300"/>
+
+**0 dB**
+<img src="results/confusion_0dB.png" width="300"/>
+
+**–5 dB (Noisy Condition)**
+<img src="results/confusion_-5dB.png" width="300"/>
+
+---
+
+*Figure 1–6 illustrate that as SNR decreases, the model becomes increasingly confused between phonetically similar commands such as “go/no” and “on/off”, confirming reduced robustness in low-SNR environments.*
 
 ## Current Discussion  
 The current phase demonstrates that while the baseline CNN achieves ~69 % accuracy on clean data, its performance **declines rapidly under strong noise**—a known issue in small-footprint KWS (Li et al., 2022).  
