@@ -1,6 +1,6 @@
-# 🗣️ Keyword Spotting in Noisy Environments
+# Keyword Spotting in Noisy Environments
 
-### 📍 Project Overview
+### Project Overview
 This repository documents the **current progress** of a keyword spotting (KWS) system developed for *ELEC5305 – Sound Synthesis Deep Dive* at the University of Sydney.  
 The project aims to design, train, and evaluate a **Convolutional Neural Network (CNN)** that can recognize short speech commands from the *Google Speech Commands v0.02* dataset (Warden, 2018).  
 
@@ -13,7 +13,7 @@ Further development (for the final submission) will include **data augmentation*
 
 ---
 
-## 🧩 Current Repository Structure  
+## Current Repository Structure  
 
 | File | Description |
 |------|--------------|
@@ -27,7 +27,7 @@ Further development (for the final submission) will include **data augmentation*
 
 ---
 
-## ⚙️ Current Workflow  
+## Current Workflow  
 
 ### Step 1️⃣ – **Feature Extraction**  
 Each `.wav` file is converted into a **log-Mel spectrogram** (16 kHz sampling, 25 ms window, 10 ms hop, 40 Mel filters).  
@@ -58,7 +58,7 @@ This script evaluates recognition accuracy across **SNR = 30, 20, 10, 0, −5 dB
 
 ---
 
-## 📊 Current Results  
+## Current Results  
 
 | **SNR (dB)** | **Accuracy (%)** |
 |---------------|------------------|
@@ -73,7 +73,7 @@ This script evaluates recognition accuracy across **SNR = 30, 20, 10, 0, −5 dB
 
 ---
 
-## 💬 Current Discussion  
+## Current Discussion  
 The current phase demonstrates that while the baseline CNN achieves ~69 % accuracy on clean data, its performance **declines rapidly under strong noise**—a known issue in small-footprint KWS (Li et al., 2022).  
 
 ### Planned Next Steps (Final Phase)
@@ -84,7 +84,7 @@ The current phase demonstrates that while the baseline CNN achieves ~69 % accura
 
 ---
 
-## 📘 References  
+## References  
 - Li, J., Deng, L., & Gong, Y. (2022). *Noise-Robust Automatic Speech Recognition: A Review.* IEEE/ACM T-ASLP, 30, 1532–1550.  
 - Park, D. S. et al. (2019). *SpecAugment: A Simple Data Augmentation Method for Automatic Speech Recognition.* Interspeech 2019.  
 - Reddy, C. K. A. et al. (2021). *DNS Challenge: Improving Noise Suppression Models.* Interspeech 2021.  
@@ -92,7 +92,7 @@ The current phase demonstrates that while the baseline CNN achieves ~69 % accura
 
 ---
 
-## 👨‍💻 Author  
+## Author  
 **Jianing Zhang (SID 540101436)**  
 Master of Professional Engineering (Electrical)  
 University of Sydney – ELEC5305 Project (Supervisor: Dr. Craig Jin)  
