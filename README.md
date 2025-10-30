@@ -1,83 +1,81 @@
 # 🗣️ Keyword Spotting in Noisy Environments  
 
-### ELEC5305 – Sound Synthesis Deep Dive  
+**ELEC5305 – Sound Synthesis Deep Dive**  
 **Author:** Jianing Zhang (SID 540101436)  
 **Supervisor:** Dr. Craig Jin  
 **Institution:** University of Sydney  
-**Project Stage:** Feedback 2 Progress Submission  
+**Project Stage:** Feedback 2 Progress Report  
 
 ---
 
-## 1️⃣ Overview  
+## 1️⃣ Project Overview  
 
-This repository presents the **current progress** of a keyword spotting (KWS) project that investigates how **Convolutional Neural Networks (CNNs)** perform in noisy environments.  
-The goal is to recognize short speech commands using the *Google Speech Commands v0.02* dataset (Warden, 2018),  
-and evaluate performance under different **Signal-to-Noise Ratios (SNRs)**.  
+This repository presents the current progress of a **Keyword Spotting (KWS)** system designed to recognize short speech commands using a **Convolutional Neural Network (CNN)**.  
+The study evaluates how well a compact CNN can maintain accuracy under different **noise conditions**, using the *Google Speech Commands v0.02* dataset (Warden, 2018).  
 
-This report represents the **Feedback 2 stage** — focusing on building a baseline, analyzing results, and defining next-phase improvements.  
+This version (Feedback 2) focuses on:  
+1. Building a baseline CNN architecture for KWS.  
+2. Testing noise robustness under Gaussian noise at multiple Signal-to-Noise Ratios (SNRs).  
+3. Analyzing performance degradation using quantitative and visual metrics.  
 
----
-
-## 2️⃣ Research Question & Motivation  
-
-> **Research Question:**  
-> How can a small-footprint CNN model maintain robust keyword recognition performance under noisy acoustic conditions?
-
-With the growth of **voice-controlled IoT systems** and **embedded assistants**,  
-achieving reliable recognition in real-world noise is a key challenge.  
-Compact CNN architectures are attractive due to their low computation cost,  
-but they suffer from poor noise generalization (Li et al., 2022).  
-
-This project aims to benchmark a baseline CNN’s robustness to Gaussian noise  
-and explore enhancement techniques to improve low-SNR performance.  
+The next stage will introduce **data augmentation**, **attention-based architectures**, and **real-world noise testing**.
 
 ---
 
-## 3️⃣ Baseline Setup  
+## 2️⃣ Research Question  
 
-### Dataset  
-- **Source:** [Google Speech Commands v0.02](https://arxiv.org/abs/1804.03209)  
-- **Selected Classes:** `yes`, `no`, `stop`, `go`, `up`, `down`, `left`, `right`, `on`, `off`  
-- **Sampling Rate:** 16 kHz  
+> **How can a small-footprint CNN model maintain reliable keyword recognition in noisy acoustic environments?**
 
-### Baseline Reference  
-- Architecture adapted from [KWS-20 Benchmark](https://michel-meneses.github.io/sidi-kws/#method).  
-- Simplified 2-layer CNN model trained on log-Mel spectrogram features.  
+Voice-controlled devices require efficient and robust models.  
+While CNNs perform well on clean data, their accuracy drops significantly under background noise.  
+This project benchmarks baseline CNN performance under Gaussian noise and sets up a framework for future robustness improvements.
 
 ---
 
-## 4️⃣ Data Preprocessing  
+## 3️⃣ Dataset and Baseline Setup  
 
-| Step | Description |
+| Item | Description |
 |------|--------------|
-| **1. Resampling** | Audio files resampled to 16 kHz and amplitude-normalized. |
-| **2. Framing** | 25 ms Hamming windows, 10 ms hop size. |
-| **3. Feature Extraction** | 40-band **log-Mel spectrograms** computed via `librosa`. |
-| **4. Normalization** | Each sample standardized before CNN input. |
+| **Dataset** | [Google Speech Commands v0.02](https://arxiv.org/abs/1804.03209) |
+| **Classes** | yes, no, stop, go, up, down, left, right, on, off |
+| **Sampling Rate** | 16 kHz |
+| **Features** | Log-Mel spectrograms (40 Mel filters, 25 ms window, 10 ms hop) |
+| **Baseline Reference** | Architecture adapted from [KWS-20 Benchmark](https://michel-meneses.github.io/sidi-kws/#method) |
 
-Resulting tensors: `(1, n_mels, T)`  
-These features are passed directly into the KWSCNN architecture.
+---
+
+## 4️⃣ Preprocessing  
+
+All `.wav` files are converted into log-Mel spectrograms for CNN input.  
+This step is automatically handled by `features.py`.
+
+| Step | Operation |
+|------|------------|
+| 1 | Resample to 16 kHz |
+| 2 | Apply 25 ms Hamming window, 10 ms hop |
+| 3 | Compute 40-band log-Mel spectrogram |
+| 4 | Normalize amplitude per sample |
 
 ---
 
 ## 5️⃣ Model Architecture  
 
-| Layer | Type | Output Shape | Activation |
-|--------|------|---------------|-------------|
+| Layer | Type | Output | Activation |
+|--------|------|---------|-------------|
 | 1 | Conv2D + BatchNorm | (16, 20, 40) | ReLU |
 | 2 | Conv2D + BatchNorm | (32, 10, 20) | ReLU |
 | 3 | Fully Connected | (10,) | Softmax |
 
-**Optimizer:** Adam (lr=1e-3)  
+**Optimizer:** Adam (lr = 1e-3)  
 **Loss:** Cross-Entropy  
-**Epochs:** 20  
 **Batch Size:** 128  
+**Epochs:** 20  
 
 ---
 
-## 6️⃣ Training & Evaluation  
+## 6️⃣ Training and Evaluation  
 
-### Training Command
+### Training Command  
 ```bash
 python train_baseline.py \
   --data_root ./speech_commands_v0.02 \
