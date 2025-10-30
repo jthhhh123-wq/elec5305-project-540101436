@@ -1,85 +1,77 @@
-# 🗣️ Keyword Spotting in Noisy Environments  
+---
 
-**ELEC5305 – Sound Synthesis Deep Dive**  
-**Author:** Jianing Zhang (SID 540101436)  
-**Supervisor:** Dr. Craig Jin  
-**Institution:** University of Sydney  
-**Project Stage:** Feedback 2 Progress Report  
+## 7️⃣ Results and Discussion  
+
+After 20 epochs of training, the baseline CNN achieved good performance under clean audio conditions but showed a clear drop in accuracy as noise increased.
+
+### 🔹 Quantitative Results
+
+| **SNR (dB)** | **Accuracy (%)** |
+|--------------:|----------------:|
+| 30 | 68.5 |
+| 20 | 63.4 |
+| 10 | 56.7 |
+| 0  | 46.2 |
+| −5 | 37.8 |
+
+**Observation:**  
+The model performs well in clean or mild noise (≥20 dB) but rapidly loses accuracy below 10 dB, indicating limited robustness to strong background interference.
 
 ---
 
-## 1️⃣ Project Overview  
+### 🔹 Figure 1 – Accuracy vs. SNR  
+Shows overall performance trend across different noise levels.
 
-This repository presents the current progress of a **Keyword Spotting (KWS)** system designed to recognize short speech commands using a **Convolutional Neural Network (CNN)**.  
-The study evaluates how well a compact CNN can maintain accuracy under different **noise conditions**, using the *Google Speech Commands v0.02* dataset (Warden, 2018).  
-
-This version (Feedback 2) focuses on:  
-1. Building a baseline CNN architecture for KWS.  
-2. Testing noise robustness under Gaussian noise at multiple Signal-to-Noise Ratios (SNRs).  
-3. Analyzing performance degradation using quantitative and visual metrics.  
-
-The next stage will introduce **data augmentation**, **attention-based architectures**, and **real-world noise testing**.
+<img src="results/accuracy_vs_snr.png" width="500"/>
 
 ---
 
-## 2️⃣ Research Question  
+### 🔹 Figures 2–6 – Confusion Matrices under Different Noise Levels  
 
-> **How can a small-footprint CNN model maintain reliable keyword recognition in noisy acoustic environments?**
+These matrices illustrate how misclassification increases under noise, especially between acoustically similar commands (“go/no” and “on/off”).
 
-Voice-controlled devices require efficient and robust models.  
-While CNNs perform well on clean data, their accuracy drops significantly under background noise.  
-This project benchmarks baseline CNN performance under Gaussian noise and sets up a framework for future robustness improvements.
+**30 dB (clean)**  
+<img src="results/confusion_30dB.png" width="300"/>
 
----
+**20 dB**  
+<img src="results/confusion_20dB.png" width="300"/>
 
-## 3️⃣ Dataset and Baseline Setup  
+**10 dB**  
+<img src="results/confusion_10dB.png" width="300"/>
 
-| Item | Description |
-|------|--------------|
-| **Dataset** | [Google Speech Commands v0.02](https://arxiv.org/abs/1804.03209) |
-| **Classes** | yes, no, stop, go, up, down, left, right, on, off |
-| **Sampling Rate** | 16 kHz |
-| **Features** | Log-Mel spectrograms (40 Mel filters, 25 ms window, 10 ms hop) |
-| **Baseline Reference** | Architecture adapted from [KWS-20 Benchmark](https://michel-meneses.github.io/sidi-kws/#method) |
+**0 dB**  
+<img src="results/confusion_0dB.png" width="300"/>
 
----
-
-## 4️⃣ Preprocessing  
-
-All `.wav` files are converted into log-Mel spectrograms for CNN input.  
-This step is automatically handled by `features.py`.
-
-| Step | Operation |
-|------|------------|
-| 1 | Resample to 16 kHz |
-| 2 | Apply 25 ms Hamming window, 10 ms hop |
-| 3 | Compute 40-band log-Mel spectrogram |
-| 4 | Normalize amplitude per sample |
+**−5 dB (high noise)**  
+<img src="results/confusion_-5dB.png" width="300"/>
 
 ---
 
-## 5️⃣ Model Architecture  
+### 🔹 Discussion  
 
-| Layer | Type | Output | Activation |
-|--------|------|---------|-------------|
-| 1 | Conv2D + BatchNorm | (16, 20, 40) | ReLU |
-| 2 | Conv2D + BatchNorm | (32, 10, 20) | ReLU |
-| 3 | Fully Connected | (10,) | Softmax |
+These results align with previous studies showing that **noise robustness remains a key challenge** in small-footprint KWS systems (Li et al., 2022).  
+At low SNRs, overlapping phonetic cues and spectral masking cause the CNN to confuse similar temporal patterns.  
 
-**Optimizer:** Adam (lr = 1e-3)  
-**Loss:** Cross-Entropy  
-**Batch Size:** 128  
-**Epochs:** 20  
+Future improvements will include:  
+- **SpecAugment** and additive noise augmentation (Park et al., 2019).  
+- **Denoising or feature normalization front-ends** (Reddy et al., 2021).  
+- **CNN-LSTM or attention-based architectures** for better temporal modeling.  
+- Real-world environmental noise evaluation.
 
 ---
 
-## 6️⃣ Training and Evaluation  
+## 8️⃣ References  
 
-### Training Command  
-```bash
-python train_baseline.py \
-  --data_root ./speech_commands_v0.02 \
-  --classes yes no stop go up down left right on off \
-  --epochs 20 --batch_size 128 --lr 1e-3 \
-  --save_path models/baseline_cnn_final.pt
+- Li, J., Deng, L., & Gong, Y. (2022). *Noise-Robust Automatic Speech Recognition: A Review.* IEEE/ACM T-ASLP, 30, 1532–1550.  
+- Park, D. S. et al. (2019). *SpecAugment: A Simple Data Augmentation Method for Automatic Speech Recognition.* Interspeech 2019.  
+- Reddy, C. K. A. et al. (2021). *DNS Challenge: Improving Noise Suppression Models.* Interspeech 2021.  
+- Warden, P. (2018). *Speech Commands: A Dataset for Limited-Vocabulary Speech Recognition.* arXiv:1804.03209.  
 
+---
+
+## 🧠 Notes  
+
+This report represents **the current development stage (Feedback 2)** of the KWS project.  
+The final submission will include expanded data augmentation, model optimization, and real environmental noise testing.
+
+---
