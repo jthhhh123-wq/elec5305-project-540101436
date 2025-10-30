@@ -1,107 +1,89 @@
-# Keyword Spotting in Noisy Environments
+# Keyword Spotting in Noisy Environments  
 
-### Project Overview
+## Project Overview  
 This repository documents the **current progress** of a keyword spotting (KWS) system developed for *ELEC5305 – Sound Synthesis Deep Dive* at the University of Sydney.  
 The project aims to design, train, and evaluate a **Convolutional Neural Network (CNN)** that can recognize short speech commands from the *Google Speech Commands v0.02* dataset (Warden, 2018).  
 
-The current stage (Feedback 2 submission) focuses on:  
-1. Building and training the baseline CNN model.  
-2. Evaluating its **noise robustness** under Gaussian noise at multiple Signal-to-Noise Ratios (SNRs).  
-3. Analyzing performance degradation using quantitative and visual metrics.  
+This stage (Feedback 2 submission) focuses on:  
+1. Reviewing state-of-the-art literature and defining the **research question**.  
+2. Building and training a **baseline CNN** for KWS.  
+3. Evaluating its **noise robustness** under Gaussian noise at multiple SNR levels.  
+4. Providing example input/output cases for demonstration.  
 
-Further development (for the final submission) will include **data augmentation**, **improved architectures**, and **additional evaluation scenarios**.
-
-## Current Repository Structure  
-
-| File | Description |
-|------|--------------|
-| `features.py` | Extracts **log-Mel spectrograms** from audio signals for CNN input. |
-| `model.py` | Defines the **KWSCNN** baseline model (2 convolutional layers + fully connected output). |
-| `train_baseline.py` | Handles model training, dataset loading, and checkpoint saving. |
-| `evaluate_noise.py` | Adds Gaussian noise at multiple SNRs and evaluates accuracy + confusion matrices. |
-| `models/` | Stores trained weights (`baseline_cnn_final.pt`). |
-| `results_feedback2/` | Contains generated plots (accuracy vs. SNR and confusion matrices). |
-| `speech_commands_v0.02/` | Dataset directory with 10 selected command classes. |
-
-
-## Current Workflow  
-
-### Step 1️⃣ – **Feature Extraction**  
-Each `.wav` file is converted into a **log-Mel spectrogram** (16 kHz sampling, 25 ms window, 10 ms hop, 40 Mel filters).  
-
-### Step 2️⃣ – **Model Training**  
-Run the baseline training script:  
-```bash
-python train_baseline.py \
-  --data_root ./speech_commands_v0.02 \
-  --classes yes no stop go up down left right on off \
-  --epochs 20 --batch_size 128 --lr 1e-3 \
-  --save_path models/baseline_cnn_final.pt
-```
-This produces a trained CNN and validation accuracy curve.
-
-### Step 3️⃣ – **Noise Evaluation**  
-```bash
-python evaluate_noise.py \
-  --data_root ./speech_commands_v0.02 \
-  --model_path models/baseline_cnn_final.pt \
-  --classes yes no stop go up down left right on off \
-  --plot_confusion_all True \
-  --results_dir results_feedback2
-```
-This script evaluates recognition accuracy across **SNR = 30, 20, 10, 0, −5 dB** and generates:  
-- `accuracy_vs_snr.png` (overall trend)  
-- `confusion_*.png` (detailed per-SNR matrices)
-
-
-## Current Results  
-
-| **SNR (dB)** | **Accuracy (%)** |
-|---------------|------------------|
-| 30 | 68.5 |
-| 20 | 63.4 |
-| 10 | 56.7 |
-| 0  | 46.2 |
-| −5 | 37.8 |
-
-### Figure 1. Accuracy vs SNR
-The model performs well under clean/mild noise but degrades sharply below 10 dB.
-
-![Accuracy vs SNR](results/accuracy_vs_snr.png)
+Further development (for the **final submission**) will extend to **data augmentation**, **improved architectures**, and **real-world environmental noise testing**.  
 
 ---
 
-### Figure 2–6. Confusion Matrices under Different Noise Levels
+## 1. Research Question  
+> How can a compact CNN model maintain reliable keyword recognition performance in noisy acoustic environments?
 
-At higher noise levels (0 dB and –5 dB), misclassification occurs between “go/no” and “on/off”, confirming reduced robustness.
+This question explores the trade-off between model simplicity and robustness — a core challenge for real-time, on-device speech recognition.  
 
-| SNR (dB) | Confusion Matrix |
-|-----------|-----------------|
-| 30 | <img src="results/confusion_30dB.png" width="400"/> |
-| 20 | <img src="results/confusion_20dB.png" width="400"/> |
-| 10 | <img src="results/confusion_10dB.png" width="400"/> |
-| 0  | <img src="results/confusion_0dB.png" width="400"/> |
-| -5 | <img src="results/confusion_-5dB.png" width="400"/> |
+---
 
+## 2. Background and Literature Review  
+Keyword spotting systems enable low-power, always-on interfaces such as *Hey Siri* and *OK Google*.  
+While CNN-based models have achieved strong accuracy in clean conditions, they often fail under noise or far-field settings (Li et al., 2022).  
 
-## Current Discussion  
-The current phase demonstrates that while the baseline CNN achieves ~69 % accuracy on clean data, its performance **declines rapidly under strong noise**—a known issue in small-footprint KWS (Li et al., 2022).  
+Recent works addressing these challenges include:  
+- **SpecAugment** for spectrogram augmentation to enhance noise robustness (Park et al., 2019).  
+- **Denoising and normalization front-ends** to improve SNR tolerance (Reddy et al., 2021).  
+- **Compact CNN and hybrid CNN-LSTM** models for on-device deployment (Sainath et al., 2015).  
+- **KWS-20 baseline** providing a structured benchmark for small-footprint KWS (Meneses et al., 2020).  
 
-### Planned Next Steps (Final Phase)
-- Implement **SpecAugment** and real-world noise augmentation (Park et al., 2019).  
-- Add **feature normalization / denoising front-end** (Reddy et al., 2021).  
-- Explore **attention-based CNN or GRU** architectures to improve temporal robustness.  
-- Extend evaluation to **real environmental noise** beyond Gaussian conditions.  
+This project builds upon these approaches by evaluating a CNN baseline’s degradation pattern under controlled **Gaussian noise**,  
+serving as a foundation for later augmentation and robustness improvements.
 
+---
 
-## References  
-- Li, J., Deng, L., & Gong, Y. (2022). *Noise-Robust Automatic Speech Recognition: A Review.* IEEE/ACM T-ASLP, 30, 1532–1550.  
-- Park, D. S. et al. (2019). *SpecAugment: A Simple Data Augmentation Method for Automatic Speech Recognition.* Interspeech 2019.  
-- Reddy, C. K. A. et al. (2021). *DNS Challenge: Improving Noise Suppression Models.* Interspeech 2021.  
-- Warden, P. (2018). *Speech Commands: A Dataset for Limited-Vocabulary Speech Recognition.* arXiv:1804.03209.  
+## 3. Baseline Model and Dataset  
 
+**Dataset:**  
+- [Google Speech Commands v0.02](https://arxiv.org/abs/1804.03209) (Warden, 2018)  
+- 10 selected command classes: `yes, no, stop, go, up, down, left, right, on, off`  
 
-## Author  
-**Jianing Zhang (SID 540101436)**  
-Master of Professional Engineering (Electrical)  
-University of Sydney – ELEC5305 Project (Supervisor: Dr. Craig Jin)  
+**Baseline Reference:**  
+- Structure inspired by the [KWS-20 project](https://michel-meneses.github.io/sidi-kws/#method).  
+- Adapted with simplified 2-layer CNN and log-Mel feature extraction pipeline.  
+
+**Model Architecture:**  
+- 2 convolutional layers + batch normalization  
+- 1 fully connected classifier  
+- Trained using Adam optimizer (lr = 1e-3, batch size = 128, epochs = 20)
+
+---
+
+## 4. My Contribution  
+
+**Implemented:**
+- `evaluate_noise.py` — custom evaluation script to test performance under multiple SNRs (30 → −5 dB).  
+- Automated generation of:
+  - `accuracy_vs_snr.png`
+  - `confusion_*.png` for each noise level.  
+- Enhanced `train_baseline.py` with:
+  - Learning rate, batch size, and epoch configurability.  
+  - Checkpoint saving for best-performing models.  
+- Added reproducible **training + testing commands** in README.  
+- Prepared **audio examples** for future GitHub demonstration.
+
+---
+
+## 5. Repository Structure  
+
+| File | Description |
+|------|--------------|
+| `features.py` | Extracts **log-Mel spectrograms** from .wav inputs. |
+| `model.py` | Defines the **KWSCNN** baseline architecture. |
+| `train_baseline.py` | Trains the CNN model on selected commands. |
+| `evaluate_noise.py` | Evaluates trained model under Gaussian noise. |
+| `results_feedback2/` | Contains output plots (accuracy + confusion matrices). |
+| `speech_commands_v0.02/` | Dataset directory. |
+| `requirements.txt` | Lists dependencies (torch, librosa, numpy, matplotlib, seaborn). |
+
+---
+
+## 6. How to Run  
+
+### Step 1️⃣ – Environment Setup
+```bash
+pip install -r requirements.txt
