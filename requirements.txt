@@ -1,8 +1,0 @@
-torch>=2.2
-torchaudio>=2.2
-numpy
-scipy
-matplotlib
-tqdm
-scikit-learn
-pandas
