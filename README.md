@@ -11,6 +11,7 @@ It includes a clean **baseline**, a **noise-augmented (AWGN)** experiment, and a
 ```bash
 conda create -n kws python=3.10
 conda activate kws
+---
 
 ### 2. Install dependencies
 pip install torch torchaudio matplotlib pyyaml
