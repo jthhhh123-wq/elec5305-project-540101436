@@ -1,0 +1,33 @@
+seed: 42
+sample_rate: 16000
+batch_size: 128
+num_workers: 4
+epochs: 25
+lr: 0.001
+weight_decay: 0.0005
+
+# Mel-spectrogram
+n_mels: 40
+
+# ConvMixer config
+convmixer:
+  dim: 128         # channel width
+  depth: 4         # number of mixer blocks
+  kernel_size: 7   # depthwise conv kernel
+  patch_size: 4    # patch embed conv stride=kernel=patch_size
+  dropout: 0.0
+
+# labels (12-class: 10 commands + unknown + silence)
+labels:
+  - yes
+  - no
+  - up
+  - down
+  - left
+  - right
+  - on
+  - off
+  - stop
+  - go
+  - unknown
+  - silence
