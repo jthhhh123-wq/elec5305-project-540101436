@@ -49,15 +49,26 @@ noise_robust_kws_convmixer/
 conda create -n kws python=3.10
 conda activate kws
 ```
+
 ### 2. Install dependencies
 ```bash
 pip install torch torchaudio matplotlib pyyaml
 ```
-### 3. Prepare dataset
+
+### 3. Hardware environment
+The experiments were run on:
+```bash
+GPU: NVIDIA RTX 4060 (8GB)
+Framework: PyTorch (CUDA enabled)
+```
+(If CUDA is unavailable, the scripts will automatically fall back to CPU, but training will be significantly slower.)
+
+### 4. Prepare dataset
 Download Google Speech Commands v0.02 and place it under:
 ```bash
 project_root/data/SpeechCommands/
 ```
+
 ## 🚀 Run Baseline
 Train the baseline model
 ```bash
