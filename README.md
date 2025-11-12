@@ -4,6 +4,7 @@ This project implements a **Keyword Spotting (KWS)** system based on **ConvMixer
 It includes a clean **baseline**, a **noise-augmented (AWGN)** experiment, and an improved **AWGN_v2** version.
 
 ## 📂 Folder Structure
+```bash
 noise_robust_kws_convmixer/
 │
 ├── baseline/
@@ -40,6 +41,7 @@ noise_robust_kws_convmixer/
 │
 └── data/
     └── SpeechCommands/
+```
 
 ## ⚙️ Environment Setup
 ### 1. Create and activate conda environment
