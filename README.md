@@ -67,7 +67,9 @@ Evaluate robustness under noise
 python -m src.eval_noise_sweep --data_dir ../data --config ./configs/baseline.yaml --ckpt ../runs/baseline_gpu_25ep/baseline_best.pt
 ```
 Results will be automatically saved to:
+```bash
 runs/acc_snr.csv
+```
 
 ## 🔊 Run AWGN Experiment
 This version adds Additive White Gaussian Noise (AWGN) during training for noise robustness.
@@ -86,7 +88,9 @@ Evaluate the model
 python -m src.eval_noise_sweep --data_dir ../../data --config ./configs/awgn_train.yaml --ckpt ../../runs/awgn/awgn_best.pt
 ```
 Results will append to:
+```bash
 runs/acc_snr.csv
+```
 
 ## 🧩 Run AWGN_v2 (Improved Version)
 This version deepens the model and extends noise range for better low-SNR performance.
@@ -100,7 +104,9 @@ Evaluate the model
 python -m src.eval_noise_sweep --data_dir ../../data --config ./configs/awgn_train_v2.yaml --ckpt ../../runs/awgn_v2/awgn_best.pt
 ```
 Results will append to:
+```bash
 runs/acc_snr.csv
+```
 
 ## 📈 Plot Accuracy vs SNR
 After all experiments finish (baseline + awgn + awgn_v2),
@@ -110,5 +116,7 @@ cd ../../
 python experiments/plot_acc_snr.py --csv runs/acc_snr.csv --out runs/acc_snr.png --title "Baseline vs AWGN vs AWGN_v2"
 ```
 The plot and CSV are saved to:
+```bash
 runs/acc_snr.csv
 runs/acc_snr.png
+```
