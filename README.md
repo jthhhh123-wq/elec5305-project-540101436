@@ -121,7 +121,7 @@ Results will append to:
 runs/acc_snr.csv
 ```
 
-## 📈 Plot Accuracy vs SNR
+### 📈 Plot Accuracy vs SNR
 After all experiments finish (baseline + awgn + awgn_v2),
 you can visualize the comparison:
 ```bash
@@ -133,3 +133,97 @@ The plot and CSV are saved to:
 runs/acc_snr.csv
 runs/acc_snr.png
 ```
+
+## 📘 Curriculum Learning Training
+This experiment trains the model with multi-stage SNR curriculum learning, where the model is trained from high SNR (easy) to low SNR (hard).
+All settings are defined in:
+
+experiments/curriculum/configs/curriculum_train.yaml
+
+###🚀 1. Training (Curriculum Learning)
+
+Enter the curriculum folder：
+
+```bash
+cd experiments/curriculum
+```
+
+Run the curriculum-learning training:
+
+```bash
+python -m src.train \
+    --data_dir ../../data \
+    --config ./configs/curriculum_train.yaml \
+    --ckpt_dir ../../runs/curriculum
+```
+
+This will:
+
+Train sequentially on SNR stages (e.g., 20 → 10 → 0 → –5 dB)
+
+Save checkpoints to runs/curriculum/
+
+Save the best model as
+
+```bash
+runs/curriculum/<tag>_best.pt
+```
+
+### 📊 2. Noise Robustness Evaluation
+
+After training, evaluate the model under different SNR values.
+
+Run from the curriculum experiment folder:
+
+```bash
+python -m src.eval_noise_sweep \
+    --data_dir ../../data \
+    --ckpt ../../runs/curriculum/<your_tag>_best.pt \
+    --out_csv ../../runs/acc_snr.csv
+```
+This script will:
+
+Test the trained model at SNR = 20, 10, 0, –5 dB
+
+Append results to:
+
+```bash
+runs/acc_snr.csv
+```
+
+### 📈 3. Plotting the Accuracy–SNR Curve
+
+Use the unified plotting script:
+
+```bash
+python ../../experiments/plot_acc_snr.py \
+    --csv ../../runs/acc_snr.csv \
+    --out ../../runs/acc_snr.png \
+    --title "Baseline vs AWGN vs Curriculum"
+```
+
+This generates:
+
+```bash
+runs/acc_snr.png
+```
+
+The plot will contain all experiments whose results are recorded in the CSV, such as:
+
+baseline
+
+awgn_train
+
+awgn_train_v2
+
+curriculum_train
+
+### ✔ Expected Result Trend
+
+Curriculum learning typically provides:
+
+Slightly worse performance at very high noise (–5 dB) compared to AWGN v2
+
+Clear improvement at moderate/high SNR (10–20 dB)
+
+Smooth and stable SNR–Accuracy curve
