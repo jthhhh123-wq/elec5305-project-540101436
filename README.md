@@ -91,11 +91,7 @@ Train the AWGN model
 cd experiments/awgn
 python -m src.train --data_dir ../../data --config ./configs/awgn_train.yaml --ckpt_dir ../../runs/awgn
 ```
-Train the AWGN model
-```bash
-cd baseline
-python -m src.train --data_dir ../data --config ./configs/baseline.yaml --ckpt_dir ../runs/baseline_gpu_25ep
-```
+
 Evaluate the model
 ```bash
 python -m src.eval_noise_sweep --data_dir ../../data --config ./configs/awgn_train.yaml --ckpt ../../runs/awgn/awgn_best.pt
