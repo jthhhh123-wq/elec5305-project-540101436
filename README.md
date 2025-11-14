@@ -196,10 +196,7 @@ runs/acc_snr.csv
 Use the unified plotting script:
 
 ```bash
-python ../../experiments/plot_acc_snr.py \
-    --csv ../../runs/acc_snr.csv \
-    --out ../../runs/acc_snr.png \
-    --title "Baseline vs AWGN vs Curriculum"
+python experiments/plot_acc_snr.py --csv runs/acc_snr.csv --out runs/acc_snr.png --title "Baseline vs AWGN vs Curriculum"
 ```
 
 This generates:
