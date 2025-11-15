@@ -221,3 +221,6 @@ Smooth and stable SNR–Accuracy curve
 ```bash
 python -m src.eval_noise_sweep --data_dir ../../data --config ./configs/se_reverb.yaml --ckpt ../../runs/se_reverb/se_reverb_best.pt
 ```
+```bash
+python experiments/plot_acc_snr.py --csv runs/acc_snr.csv --out runs/acc_snr.png --title "Baseline vs AWGN vs Curriculum vs se_reverb"
+```
