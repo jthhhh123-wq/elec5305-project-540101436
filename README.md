@@ -172,7 +172,7 @@ After training, evaluate the model under different SNR values.
 Run from the curriculum experiment folder:
 
 ```bash
-python -m src.eval_noise_sweep --data_dir ../../data --config ./configs/curriculum.yaml --ckpt ../../runs/curriculum/curriculum.pt
+python -m src.eval_noise_sweep --data_dir ../../data --config ./configs/curriculum_train.yaml --ckpt ../../runs/curriculum/curriculum.pt
 ```
 This script will:
 
