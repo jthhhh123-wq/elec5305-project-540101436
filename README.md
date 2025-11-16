@@ -209,7 +209,7 @@ This experiment trains the model using multi-stage SNR curriculum learning, wher
 All settings are defined in:
 experiments/curriculum/configs/curriculum_train.yaml
 
-###🚀 5.1 Training (Curriculum Learning)
+### 🚀 5.1 Training (Curriculum Learning)
 📍 Enter the curriculum folder：open a terminal in experiments/curriculum/.
 
 Run the curriculum-learning training:
