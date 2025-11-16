@@ -350,7 +350,7 @@ The script will save the figure to:
 
 ```bash
 figures/spectrogram_noisy_curriculum_sereverb.png
-···
+```
 
 📌 Example Output
 ![Spectrogram Variants](figures/spectrogram_noisy_curriculum_sereverb.png)
