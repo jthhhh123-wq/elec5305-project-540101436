@@ -353,4 +353,4 @@ figures/spectrogram_noisy_curriculum_sereverb.png
 ```
 
 📌 Example Output
-![Spectrogram Variants](figures/spectrogram_noisy_curriculum_sereverb.png)
+![Spectrogram Variants](figures/melspec_variants_noisy_curriculum_sereverb.png)
