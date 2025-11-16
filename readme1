@@ -1,1 +1,63 @@
-11
+# 🎙️ Noise-Robust Keyword Spotting with ConvMixer
+
+This repository contains the code for an ELEC5305 project on **noise-robust keyword spotting (KWS)** using a lightweight **ConvMixer** architecture.  
+The system recognises short speech commands from the **Google Speech Commands v0.02** dataset under multiple noise conditions.
+
+The project progressively builds from:
+
+- a **clean baseline** model,
+- a **noise-augmented AWGN** model,
+- an extended **AWGN_v2** model with stronger noise,
+- a **curriculum learning** strategy over SNR,
+- and an **SE+Reverb** variant using speech enhancement and reverberation.
+
+All experiments share the same backbone architecture to enable fair comparison.
+---
+
+## 📂 Folder Structure
+
+```bash
+noise_robust_kws_convmixer/
+│
+├── baseline/
+│   ├── configs/
+│   │   └── baseline.yaml
+│   └── src/
+│       ├── dataset_loader.py
+│       ├── eval_noise_sweep.py
+│       ├── model.py
+│       ├── train.py
+│       ├── utils.py
+│       └── __init__.py
+│
+├── experiments/
+│   └── awgn/
+│       ├── configs/
+│       │   ├── awgn_train.yaml
+│       │   └── awgn_train_v2.yaml
+│       └── src/
+│           ├── dataset_loader.py
+│           ├── eval_noise_sweep.py
+│           ├── model.py
+│           ├── train.py
+│           ├── utils.py
+│           └── __init__.py
+│
+├── runs/
+│   ├── baseline_gpu_25ep/
+│   │   └── baseline_best.pt
+│   ├── awgn/
+│   ├── awgn_v2/
+│   ├── acc_snr.csv
+│   └── acc_snr.png
+│
+└── data/
+    └── SpeechCommands/
+```
+baseline/: code and config for the clean ConvMixer baseline.
+
+experiments/awgn/: AWGN, AWGN_v2, curriculum and SE+Reverb experiments (all built on the same structure).
+
+runs/: all trained checkpoints and evaluation outputs (CSV + plots) are written here.
+
+data/SpeechCommands/: location of the Google Speech Commands dataset.
