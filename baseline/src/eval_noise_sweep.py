@@ -1,4 +1,4 @@
-# baseline/src/eval_noise_sweep.py 头部
+# baseline/src/eval_noise_sweep.py 
 import torch, argparse, yaml
 from .dataset_loader import make_loaders
 from .model import ConvMixer
@@ -38,7 +38,7 @@ def main():
     import argparse, yaml, torch, os, csv
     from .dataset_loader import make_loaders
     from .model import ConvMixer
-    from .eval_noise_sweep import eval_snr  # 如果 eval_snr 就在同文件可略掉这行
+    from .eval_noise_sweep import eval_snr 
 
     # === Parse arguments ===
     p = argparse.ArgumentParser()
@@ -87,6 +87,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
