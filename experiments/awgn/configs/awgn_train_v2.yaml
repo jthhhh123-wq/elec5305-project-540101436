@@ -1,0 +1,40 @@
+tag: awgn_v2
+seed: 42
+
+sample_rate: 16000
+batch_size: 128
+num_workers: 4
+epochs: 25
+lr: 0.001
+weight_decay: 0.0005
+
+# Mel-spectrogram
+n_mels: 40
+
+convmixer:
+  dim: 128
+  depth: 4
+  kernel_size: 7
+  patch_size: 4
+  dropout: 0.0
+
+use_noise: true
+snr_min: 5
+snr_max: 20
+
+# labels (必须要加)
+labels:
+  - yes
+  - no
+  - up
+  - down
+  - left
+  - right
+  - on
+  - off
+  - stop
+  - go
+  - unknown
+  - silence
+
+
