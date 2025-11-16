@@ -1,5 +1,11 @@
 # 🎙️ Noise-Robust Keyword Spotting with ConvMixer
 
+## 🎬 Video Presentation
+
+My project video presentation is available here:
+
+👉 **[Click to watch the Video Presentation](https://github.com/jthhhh123-wq/noise_robust_kws_convmixer/releases/tag/video)**  
+
 This repository contains the code for an ELEC5305 project on **noise-robust keyword spotting (KWS)** using a lightweight **ConvMixer** architecture.  
 The system recognises short speech commands from the **Google Speech Commands v0.02** dataset under multiple noise conditions.
 
