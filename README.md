@@ -85,14 +85,12 @@ runs/acc_snr.csv
 ```
 you can visualize the comparison:
 ```bash
-cd ../../
 python experiments/plot_acc_snr.py --csv runs/acc_snr.csv --out runs/acc_snr.png --title "Baseline"
 ```
 ## 🔊 Run AWGN Experiment
 This version adds Additive White Gaussian Noise (AWGN) during training for noise robustness.
 Train the AWGN model
 ```bash
-cd experiments/awgn
 python -m src.train --data_dir ../../data --config ./configs/awgn_train.yaml --ckpt_dir ../../runs/awgn
 ```
 
@@ -104,7 +102,11 @@ Results will append to:
 ```bash
 runs/acc_snr.csv
 ```
-
+you can visualize the comparison:
+```bash
+cd ../../
+python experiments/plot_acc_snr.py --csv runs/acc_snr.csv --out runs/acc_snr.png --title "Baseline vs AWGN"
+```
 ## 🧩 Run AWGN_v2 (Improved Version)
 This version deepens the model and extends noise range for better low-SNR performance.
 Train the improved model
