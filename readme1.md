@@ -62,8 +62,8 @@ runs/: all trained checkpoints and evaluation outputs (CSV + plots) are written 
 
 data/SpeechCommands/: location of the Google Speech Commands dataset.
 
-## ⚙️ Environment Setup
-### 1. Create and activate conda environment
+## ⚙️ 1. Environment Setup
+### 1.1 Create and activate conda environment
 
 In any terminal:
 ```bash
@@ -71,13 +71,13 @@ conda create -n kws python=3.10
 conda activate kws
 ```
 
-### 2. Install dependencies
+### 1.2 Install dependencies
 From the project root:
 ```bash
 pip install torch torchaudio matplotlib pyyaml
 ```
 
-### 3. Hardware environment
+### 1.3 Hardware environment
 The experiments were run on:
 ```bash
 GPU: NVIDIA RTX 4060 (8GB)
@@ -85,20 +85,23 @@ Framework: PyTorch (CUDA enabled)
 ```
 (If CUDA is unavailable, the scripts will automatically fall back to CPU, but training will be significantly slower.)
 
-### 4. Prepare dataset
+### 1.4 Prepare dataset
 Download Google Speech Commands v0.02 and place it under:
 ```bash
 project_root/data/SpeechCommands/
 ```
 he scripts will automatically handle train/validation/test splits using torchaudio’s interface.
 
-## 🚀 Run Baseline
+
+## 🚀 2. Run Baseline
 📍 Terminal location: open a terminal in the baseline/ folder.
-### 1. Train the baseline model
+
+### 2.1 Train the baseline model
 ```bash
 python -m src.train --data_dir ../data --config ./configs/baseline.yaml --ckpt_dir ../runs/baseline_gpu_25ep
 ```
-### 2. Evaluate robustness under noise
+
+### 2.2 Evaluate robustness under noise
 ```bash
 python -m src.eval_noise_sweep --data_dir ../data --config ./configs/baseline.yaml --ckpt ../runs/baseline_gpu_25ep/baseline_best.pt
 ```
@@ -106,7 +109,7 @@ Results will be automatically saved to:
 ```bash
 runs/acc_snr.csv
 ```
-### 3. Plot baseline Accuracy vs SNR
+### 2.3 Plot baseline Accuracy vs SNR
 From the project root:
 ```bash
 python experiments/plot_acc_snr.py --csv runs/acc_snr.csv --out runs/acc_snr.png --title "Baseline"
@@ -117,16 +120,17 @@ runs/acc_snr.png
 ```
 containing the baseline accuracy–SNR curve
 
-## 🔊 Run AWGN Experiment
+
+## 🔊 3. Run AWGN Experiment
 This version adds Additive White Gaussian Noise (AWGN) during training to improve robustness.
 
+### 3.1 Train the AWGN model
 📍 Terminal location: open a terminal in experiments/awgn/.
-### 1. Train the AWGN model
 ```bash
 python -m src.train --data_dir ../../data --config ./configs/awgn_train.yaml --ckpt_dir ../../runs/awgn
 ```
 
-### 2. Evaluate the model
+### 3.2 Evaluate the model
 ```bash
 python -m src.eval_noise_sweep --data_dir ../../data --config ./configs/awgn_train.yaml --ckpt ../../runs/awgn/awgn_best.pt
 ```
@@ -134,22 +138,23 @@ Results will append to:
 ```bash
 runs/acc_snr.csv
 ```
-### 3. Compare baseline vs AWGN
+### 3.3 Compare baseline vs AWGN
 From the project root:
 you can visualize the comparison:
 ```bash
 python experiments/plot_acc_snr.py --csv runs/acc_snr.csv --out runs/acc_snr.png --title "Baseline vs AWGN"
 ```
-## 🧩 Run AWGN_v2 (Improved Version)
-🧩 Run AWGN_v2 (Improved Version)
-This version deepens the model and extends the noise range to better handle low-SNR conditions.
-📍 Terminal location: open a terminal in experiments/awgn/.
 
-### 1. Train the improved model
+## 🧩 4. Run AWGN_v2 (Improved Version)
+
+This version deepens the model and extends the noise range to better handle low-SNR conditions.
+
+### 4.1 Train the improved model
+📍 Terminal location: open a terminal in experiments/awgn/.
 ```bash
 python -m src.train --data_dir ../../data --config ./configs/awgn_train_v2.yaml --ckpt_dir ../../runs/awgn_v2
 ```
-### 2. Evaluate the model
+### 4.2 Evaluate the model
 ```bash
 python -m src.eval_noise_sweep --data_dir ../../data --config ./configs/awgn_train_v2.yaml --ckpt ../../runs/awgn_v2/awgn_best.pt
 ```
@@ -158,7 +163,7 @@ Results will append to:
 runs/acc_snr.csv
 ```
 
-### 3. Plot Accuracy vs SNR
+### 4.3 Plot Accuracy vs SNR
 After running baseline + AWGN + AWGN_v2, from the project root:
 ```bash
 python experiments/plot_acc_snr.py --csv runs/acc_snr.csv --out runs/acc_snr.png --title "Baseline vs AWGN vs AWGN_v2"
@@ -169,12 +174,12 @@ runs/acc_snr.csv
 runs/acc_snr.png
 ```
 
-## 📘 Curriculum Learning Training
+## 📘 5. Curriculum Learning Training
 This experiment trains the model using multi-stage SNR curriculum learning, where training starts at high SNR (easy) and gradually moves to low SNR (hard).
 All settings are defined in:
 experiments/curriculum/configs/curriculum_train.yaml
 
-###🚀 1. Training (Curriculum Learning)
+###🚀 5.1 Training (Curriculum Learning)
 📍 Enter the curriculum folder：open a terminal in experiments/curriculum/.
 
 Run the curriculum-learning training:
@@ -198,7 +203,7 @@ Save the best model as
 runs/curriculum/<tag>_best.pt
 ```
 
-### 📊 2. Noise Robustness Evaluation
+### 📊 5.2 Noise Robustness Evaluation
 
 After training, evaluate the model under different SNR values.
 
@@ -217,7 +222,7 @@ Append results to:
 runs/acc_snr.csv
 ```
 
-### 📈 3. Plotting the Accuracy–SNR Curve
+### 📈 5.3 Plotting the Accuracy–SNR Curve
 
 From the project root:
 Use the unified plotting script:
@@ -252,11 +257,12 @@ Clear improvement at moderate/high SNR (10–20 dB)
 
 Smooth and stable SNR–Accuracy curve
 
-## 📘 se_reverb Training
+## 📘 6. se_reverb Training
 
 This experiment evaluates a speech enhancement + reverberation strategy.
 
 📍 Terminal location: open a terminal in experiments/awgn/ (or the folder containing se_reverb config/src, depending on your layout).
+
 
 ```bash
 python -m src.eval_noise_sweep --data_dir ../../data --config ./configs/se_reverb.yaml --ckpt ../../runs/se_reverb/se_reverb_best.pt
