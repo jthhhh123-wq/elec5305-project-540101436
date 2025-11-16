@@ -52,7 +52,7 @@ def eval_snr(model, loader, device, snr_db: float):
         noise_power = noise.pow(2).mean()
         sig_power = waves.pow(2).mean()
         scale = (sig_power / (10 ** (snr_db / 10)) / noise_power).sqrt()
-        noisy = waves + scale * noise  # 仍在 CPU 上
+        noisy = waves + scale * noise  
 
  
         specs = to_spec(noisy)
@@ -131,6 +131,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
