@@ -1,0 +1,276 @@
+import argparse, yaml, os
+import torch
+from tqdm import tqdm
+from rich.console import Console
+from rich.table import Table
+
+from .dataset_loader import make_loaders
+from .model import ConvMixer
+from .utils import set_seed, accuracy, ensure_dir
+
+console = Console()
+
+import os, torch
+
+def to_spec_batch(waves, to_spec, chunk=16):
+    """
+    waves: (B, 1, T) on CPU or GPU
+    returns: (B, 1, M, T') float32 contiguous (on CPU)
+    """
+    waves = waves.cpu()
+    out = []
+    with torch.no_grad():
+        for i in range(0, waves.size(0), chunk):
+            part = waves[i:i+chunk]              # (b,1,T)
+            s = to_spec(part)                    # (b,M,T')  torchaudio 支持小批量
+            if s.dim() == 3:
+                s = s.unsqueeze(1)               # (b,1,M,T')
+            out.append(s)
+    specs = torch.cat(out, dim=0).to(torch.float32).contiguous()
+    return specs
+
+
+from tqdm import tqdm
+
+def train_one_epoch(model, opt, loader, to_spec, device, snr_db=None):
+    """
+    Train for one epoch. If snr_db is not None, add AWGN at given SNR.
+    Use a clean single progress bar.
+    """
+    model.train()
+    ce = torch.nn.CrossEntropyLoss()
+
+    n, loss_sum, acc_sum = 0, 0.0, 0.0
+
+    pbar = tqdm(loader, desc=f"train (SNR={snr_db} dB)" if snr_db is not None else "train", leave=False)
+
+    for waves, targets in pbar:
+
+        # ----- AWGN -----
+        if snr_db is not None:
+            with torch.no_grad():
+                noise = torch.randn_like(waves)
+                sig_power = waves.pow(2).mean()
+                noise_power = noise.pow(2).mean()
+                scale = (sig_power / (10 ** (snr_db / 10)) / noise_power).sqrt()
+                waves = waves + scale * noise
+
+        # ----- to_spec（GPU）-----
+        specs = to_spec(waves)
+        specs = specs.to(torch.float32).to(device)
+        targets = targets.to(device)
+
+        # ----- forward -----
+        opt.zero_grad(set_to_none=True)
+        logits = model(specs)
+        loss = ce(logits, targets)
+        loss.backward()
+        opt.step()
+
+        # ----- collect stats -----
+        bs = waves.size(0)
+        n += bs
+        loss_sum += loss.item() * bs
+        acc_sum += (logits.argmax(1) == targets).float().sum().item()
+
+
+        pbar.set_postfix({
+            "loss": f"{loss_sum/n:.4f}",
+            "acc": f"{acc_sum/n:.4f}",
+        })
+
+    pbar.close()
+    return loss_sum / n, acc_sum / n
+
+
+@torch.no_grad()
+def evaluate(model, loader, to_spec, device):
+
+    model.eval()
+    ce = torch.nn.CrossEntropyLoss()
+    n, loss_sum, acc_sum = 0, 0.0, 0.0
+
+    for waves, targets in tqdm(loader, desc="eval", leave=False):
+        targets = targets.to(device)
+
+        # ---- 直接像 train() 一样，在 GPU 上做 to_spec ----
+        specs = to_spec(waves)
+        specs = specs.to(torch.float32).to(device)
+
+        logits = model(specs)
+        loss = ce(logits, targets)
+
+        bs = waves.size(0)
+        loss_sum += loss.item() * bs
+        acc_sum += (logits.argmax(1) == targets).float().sum().item()
+        n += bs
+
+    return loss_sum / n, acc_sum / n
+
+
+def main(args):
+    with open(args.config, "r", encoding="utf-8") as f:
+        cfg = yaml.safe_load(f)
+
+    set_seed(cfg["seed"])
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print("Using device:", device)
+    # data & loaders
+    train_loader, valid_loader, test_loader, train_tf, eval_tf, labels = make_loaders(
+        root=args.data_dir, cfg=cfg, train_noise=args.train_noise, snr_db=args.snr_db
+    )
+
+    # model
+    cm = cfg["convmixer"]
+    model = ConvMixer(
+        n_mels=cfg.get("n_mels", 64),
+        n_classes=len(labels),
+        dim=cm["dim"],
+        depth=cm["depth"],
+        kernel_size=cm["kernel_size"],
+        patch_size=cm["patch_size"],
+        dropout=cm.get("dropout", 0.0)
+    ).to(device)
+
+    opt = torch.optim.Adam(model.parameters(), lr=cfg["lr"], weight_decay=cfg["weight_decay"])
+
+    ensure_dir(args.ckpt_dir)
+    best_val = 0.0
+
+    # ---- Early Stopping 设置 ----
+    best_val = 0.0
+    patience = 5  # 容忍 5 个 epoch 无提升（你可以改成 3~7）
+    wait = 0
+
+    # -------------------------
+    # Curriculum scheduler
+    # -------------------------
+    stages = cfg.get("snr_stages", None)  # e.g. [20, 10, 0, -5]
+    ep_per_stage = int(cfg.get("epochs_per_stage", 0))  # e.g. 10
+
+    # ---------- Curriculum training (multi-stage SNR) ----------
+    if stages and ep_per_stage > 0:
+        total_epochs = len(stages) * ep_per_stage
+        console.print(f"[cyan]Using curriculum: stages={stages}, ep_per_stage={ep_per_stage}[/cyan]")
+
+        best_val = 0.0  # global best validation accuracy
+        patience = cfg.get("patience", 5)
+        epoch_counter = 0  # global epoch index across all stages
+
+        for si, snr_db in enumerate(stages):
+            console.print(
+                f"\n[magenta]=== Stage {si + 1}/{len(stages)}: "
+                f"SNR={snr_db} dB ===[/magenta]"
+            )
+
+            # reset patience *inside* each stage, 这样不会在第一个阶段就把后面阶段砍掉
+            wait = 0
+
+            for local_ep in range(ep_per_stage):
+                epoch_counter += 1
+
+                # ---- train / valid ----
+                tr_loss, tr_acc = train_one_epoch(
+                    model, opt, train_loader, train_tf, device, snr_db=snr_db
+                )
+                va_loss, va_acc = evaluate(
+                    model, valid_loader, eval_tf, device
+                )
+
+                # ---- pretty table ----
+                table = Table(title=f"Epoch {epoch_counter}")
+                table.add_column("split")
+                table.add_column("loss")
+                table.add_column("acc")
+                table.add_row("train", f"{tr_loss:.4f}", f"{tr_acc:.4f}")
+                table.add_row("valid", f"{va_loss:.4f}", f"{va_acc:.4f}")
+                console.print(table)
+
+                # ---- early stopping (stage-wise) ----
+                if va_acc > best_val:
+                    best_val = va_acc
+                    torch.save(
+                        {
+                            "state_dict": model.state_dict(),
+                            "labels": labels,
+                            "cfg": cfg,
+                        },
+                        os.path.join(
+                            args.ckpt_dir,
+                            f"{cfg.get('tag', 'run')}_best.pt",
+                        ),
+                    )
+                    console.print(
+                        f"[green]Saved best checkpoint "
+                        f"(val_acc={best_val:.4f})[/green]"
+                    )
+                    wait = 0
+                else:
+                    wait += 1
+                    if wait > patience:
+                        console.print(
+                            f"[yellow]Early stopping in Stage {si + 1} "
+                            f"after {local_ep + 1} epochs "
+                            f"(global epoch {epoch_counter}, "
+                            f"best val_acc={best_val:.4f})[/yellow]"
+                        )
+                        # 只 break 当前这个 stage，继续下一个 SNR 阶段
+                        break
+
+    # ---------- Fallback: original single-loop training (no curriculum) ----------
+    else:
+        best_val = 0.0
+        patience = cfg.get("patience", 5)
+        wait = 0
+
+        for epoch in range(1, cfg["epochs"] + 1):
+            tr_loss, tr_acc = train_one_epoch(
+                model, opt, train_loader, train_tf, device, snr_db=None
+            )
+            va_loss, va_acc = evaluate(model, valid_loader, eval_tf, device)
+
+            table = Table(title=f"Epoch {epoch}")
+            table.add_column("split")
+            table.add_column("loss")
+            table.add_column("acc")
+            table.add_row("train", f"{tr_loss:.4f}", f"{tr_acc:.4f}")
+            table.add_row("valid", f"{va_loss:.4f}", f"{va_acc:.4f}")
+            console.print(table)
+
+            if va_acc > best_val:
+                best_val = va_acc
+                torch.save(
+                    {
+                        "state_dict": model.state_dict(),
+                        "labels": labels,
+                        "cfg": cfg,
+                    },
+                    os.path.join(
+                        args.ckpt_dir,
+                        f"{cfg.get('tag', 'run')}_best.pt",
+                    ),
+                )
+                console.print(
+                    f"[green]Saved best checkpoint "
+                    f"(val_acc={best_val:.4f})[/green]"
+                )
+                wait = 0
+            else:
+                wait += 1
+                if wait > patience:
+                    console.print(
+                        f"[yellow]Early stopping at epoch {epoch} "
+                        f"(best val_acc={best_val:.4f})[/yellow]"
+                    )
+                    break
+
+
+if __name__ == "__main__":
+    p = argparse.ArgumentParser()
+    p.add_argument("--data_dir", type=str, default="./data")
+    p.add_argument("--config", type=str, default="configs/baseline.yaml")
+    p.add_argument("--ckpt_dir", type=str, default="checkpoints")
+    p.add_argument("--train_noise", action="store_true", help="add AWGN during training")
+    p.add_argument("--snr_db", type=float, default=20.0)
+    args = p.parse_args()
+    main(args)
