@@ -98,6 +98,7 @@ he scripts will automatically handle train/validation/test splits using torchaud
 
 ### 2.1 Train the baseline model
 ```bash
+conda activate kws
 python -m src.train --data_dir ../data --config ./configs/baseline.yaml --ckpt_dir ../runs/baseline_gpu_25ep
 ```
 
@@ -112,6 +113,7 @@ runs/acc_snr.csv
 ### 2.3 Plot baseline Accuracy vs SNR
 From the project root:
 ```bash
+conda activate kws
 python experiments/plot_acc_snr.py --csv runs/acc_snr.csv --out runs/acc_snr.png --title "Baseline"
 ```
 This generates:
@@ -127,6 +129,7 @@ This version adds Additive White Gaussian Noise (AWGN) during training to improv
 ### 3.1 Train the AWGN model
 📍 Terminal location: open a terminal in experiments/awgn/.
 ```bash
+conda activate kws
 python -m src.train --data_dir ../../data --config ./configs/awgn_train.yaml --ckpt_dir ../../runs/awgn
 ```
 
@@ -152,6 +155,7 @@ This version deepens the model and extends the noise range to better handle low-
 ### 4.1 Train the improved model
 📍 Terminal location: open a terminal in experiments/awgn/.
 ```bash
+conda activate kws
 python -m src.train --data_dir ../../data --config ./configs/awgn_train_v2.yaml --ckpt_dir ../../runs/awgn_v2
 ```
 ### 4.2 Evaluate the model
@@ -185,6 +189,7 @@ experiments/curriculum/configs/curriculum_train.yaml
 Run the curriculum-learning training:
 
 ```bash
+conda activate kws
 python -m src.train \
     --data_dir ../../data \
     --config ./configs/curriculum_train.yaml \
@@ -267,6 +272,7 @@ This experiment evaluates a speech enhancement + reverberation strategy.
 From the `experiments/awgn` folder:
 
 ```bash
+conda activate kws
 python -m src.train --data_dir ../../data --config ./configs/se_reverb.yaml --ckpt_dir ../../runs/se_reverb
 ```
 
