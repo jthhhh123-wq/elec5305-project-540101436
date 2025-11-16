@@ -62,7 +62,7 @@ runs/: all trained checkpoints and evaluation outputs (CSV + plots) are written 
 
 data/SpeechCommands/: location of the Google Speech Commands dataset.
 
-## ⚙️ 1. Environment Setup
+## ⚙️ 1. Environment and Data Setup
 ### 1.1 Create and activate conda environment
 
 In any terminal:
@@ -92,6 +92,37 @@ project_root/data/SpeechCommands/
 ```
 he scripts will automatically handle train/validation/test splits using torchaudio’s interface.
 
+### 1.5 Visualizing the Mel-Spectrogram (Figure 1)
+
+To better understand the input features used by the ConvMixer keyword-spotting model, this project includes a visualization of a 64-bin Mel-spectrogram generated from a sample command (e.g., “yes”). The Mel-spectrogram provides a compact and perceptually meaningful time–frequency representation that serves as the model’s input during training and evaluation.
+
+This visualization helps illustrate:
+
+Low-frequency bands that carry most speech energy
+
+High-frequency components related to formant transitions and consonants
+
+The overall time–frequency structure the model learns to classify
+
+Why Mel-spectrograms are robust and widely used in speech recognition pipelines
+
+▶️ How to Generate the Mel-Spectrogram Figure
+
+Run the provided plotting script from the project root directory:
+```bash
+conda activate kws
+python plot_melspec.py
+```
+This script loads an example Speech Commands waveform, computes the Mel-spectrogram using the same parameters as the training pipeline (1024 FFT, 320 hop length, 64 Mel bins), converts it to log-amplitude scale, and visualizes it.
+
+📍 Where the Figure Is Saved
+
+The output image will be saved automatically as:
+
+```bash
+figures/melspec_yes.png
+```
+![Example Mel-Spectrogram](runs/melspec_example.png)
 
 ## 🚀 2. Run Baseline
 📍 Terminal location: open a terminal in the baseline/ folder.
