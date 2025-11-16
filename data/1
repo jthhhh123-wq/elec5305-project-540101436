@@ -1,1 +1,43 @@
+This folder stores the Google Speech Commands v0.02 dataset used for all experiments in this project.
 
+📥 Download the Dataset
+
+Download the official dataset from Google:
+
+🔗 https://storage.googleapis.com/download.tensorflow.org/data/speech_commands_v0.02.tar.gz
+
+📦 Extract the Dataset
+
+After downloading the .tar.gz file, extract it and place the folder into this directory:
+project_root/
+└── data/
+    └── SpeechCommands/
+        ├── yes/
+        ├── no/
+        ├── up/
+        ├── down/
+        ├── ...
+You should see ~100,000 audio files inside the SpeechCommands/ folder, organized by command labels.
+
+📌 Directory Structure Example
+data/
+└── SpeechCommands/
+    ├── bed/
+    ├── bird/
+    ├── cat/
+    ├── dog/
+    ├── down/
+    ├── eight/
+    ├── five/
+    ├── four/
+    ├── go/
+    ├── happy/
+    ├── ...
+
+✔ Ready to Use
+
+Once the dataset is placed here, all training and evaluation commands in the project will automatically load data from:
+
+data/SpeechCommands/
+
+No additional configuration is required.
