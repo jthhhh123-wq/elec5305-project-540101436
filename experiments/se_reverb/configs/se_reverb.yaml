@@ -11,7 +11,7 @@ weight_decay: 0.0005
 # Mel-spectrogram
 n_mels: 40
 
-# 这里改成顶层参数（去掉 convmixer:，全部顶格）
+
 dim: 128
 depth: 4
 kernel_size: 7
@@ -22,7 +22,7 @@ use_se: true
 use_reverb: true
 reverb_prob: 0.7
 
-# labels （必须添加）
+# labels 
 labels:
   - yes
   - no
@@ -36,3 +36,4 @@ labels:
   - go
   - unknown
   - silence
+
