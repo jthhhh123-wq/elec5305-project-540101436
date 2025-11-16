@@ -122,7 +122,7 @@ The output image will be saved automatically as:
 ```bash
 figures/melspec_yes.png
 ```
-![Example Mel-Spectrogram](runs/melspec_example.png)
+![Example Mel-Spectrogram](figures/melspec_yes.png)
 
 ## 🚀 2. Run Baseline
 📍 Terminal location: open a terminal in the baseline/ folder.
