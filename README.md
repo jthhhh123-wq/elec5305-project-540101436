@@ -19,40 +19,29 @@ All experiments share the same backbone architecture to enable fair comparison.
 ```bash
 noise_robust_kws_convmixer/
 │
-├── baseline/
-│   ├── configs/
-│   │   └── baseline.yaml
-│   └── src/
-│       ├── dataset_loader.py
-│       ├── eval_noise_sweep.py
-│       ├── model.py
-│       ├── train.py
-│       ├── utils.py
-│       └── __init__.py
+├── baseline/                # Baseline training & evaluation pipeline
+├── experiments/             # Additional training strategies
+│   ├── awgn/                # AWGN v1 and v2
+│   ├── curriculum/          # Curriculum learning
+│   └── se_reverb/           # Speech enhancement + reverb
 │
-├── experiments/
-│   └── awgn/
-│       ├── configs/
-│       │   ├── awgn_train.yaml
-│       │   └── awgn_train_v2.yaml
-│       └── src/
-│           ├── dataset_loader.py
-│           ├── eval_noise_sweep.py
-│           ├── model.py
-│           ├── train.py
-│           ├── utils.py
-│           └── __init__.py
+├── data/                    # Place Speech Commands v0.02 here
+│   └── readme.md            # Dataset download instructions
 │
-├── runs/
+├── figures/                 # Project figures (mel-spectrogram, etc.)
+│
+├── runs/                    # All experiment outputs
 │   ├── baseline_gpu_25ep/
-│   │   └── baseline_best.pt
 │   ├── awgn/
 │   ├── awgn_v2/
-│   ├── acc_snr.csv
-│   └── acc_snr.png
+│   ├── curriculum/
+│   ├── se_reverb/
+│   ├── acc_snr.csv          # Combined results of all experiments
+│   └── acc_snr.png          # Accuracy–SNR comparison plot
 │
-└── data/
-    └── SpeechCommands/
+├── README.md                # Main project documentation
+└── plot_melspec.py          # Script for generating mel-spectrogram
+
 ```
 baseline/: code and config for the clean ConvMixer baseline.
 
