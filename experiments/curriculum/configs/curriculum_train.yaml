@@ -1,0 +1,32 @@
+tag: curriculum
+seed: 42
+
+use_noise: true
+snr_stages: [20, 10, 0, -5]   # Curriculum stages
+epochs_per_stage: 10          # Train 10 epochs per stage
+batch_size: 128
+num_workers: 4
+lr: 0.001
+weight_decay: 0.0005
+n_mels: 40
+
+convmixer:
+  dim: 128
+  depth: 4
+  kernel_size: 7
+  patch_size: 4
+  dropout: 0.0
+
+labels:
+  - yes
+  - no
+  - up
+  - down
+  - left
+  - right
+  - on
+  - off
+  - stop
+  - go
+  - unknown
+  - silence
