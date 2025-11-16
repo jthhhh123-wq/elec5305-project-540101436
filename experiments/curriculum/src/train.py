@@ -93,7 +93,7 @@ def evaluate(model, loader, to_spec, device):
     for waves, targets in tqdm(loader, desc="eval", leave=False):
         targets = targets.to(device)
 
-        # ---- 直接像 train() 一样，在 GPU 上做 to_spec ----
+        
         specs = to_spec(waves)
         specs = specs.to(torch.float32).to(device)
 
@@ -137,9 +137,9 @@ def main(args):
     ensure_dir(args.ckpt_dir)
     best_val = 0.0
 
-    # ---- Early Stopping 设置 ----
+
     best_val = 0.0
-    patience = 5  # 容忍 5 个 epoch 无提升（你可以改成 3~7）
+    patience = 5  
     wait = 0
 
     # -------------------------
@@ -163,7 +163,7 @@ def main(args):
                 f"SNR={snr_db} dB ===[/magenta]"
             )
 
-            # reset patience *inside* each stage, 这样不会在第一个阶段就把后面阶段砍掉
+            # reset patience *inside* each stage, 
             wait = 0
 
             for local_ep in range(ep_per_stage):
@@ -274,3 +274,4 @@ if __name__ == "__main__":
     p.add_argument("--snr_db", type=float, default=20.0)
     args = p.parse_args()
     main(args)
+
