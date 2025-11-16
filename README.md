@@ -288,3 +288,7 @@ Curriculum learning consistently achieves the best accuracy across all noise lev
 In contrast, the SE_Reverb model performs worst across all SNRs due to enhancement artifacts and reverberation mismatch, confirming that inappropriate augmentation can harm robustness.
 The combined accuracy–SNR plot clearly highlights these differences and visually illustrates the benefit of structured training over naive augmentation.
 Below is the final accuracy–SNR comparison plot including all experiments:
+The final accuracy–SNR comparison across all experiments (baseline, AWGN, AWGN_v2, curriculum, and SE+Reverb) is shown below:
+
+![Accuracy–SNR Table](runs/acc_snr.csv)
+![Accuracy–SNR Curve](runs/acc_snr.png)
