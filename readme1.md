@@ -261,16 +261,31 @@ Smooth and stable SNR–Accuracy curve
 
 This experiment evaluates a speech enhancement + reverberation strategy.
 
-📍 Terminal location: open a terminal in experiments/awgn/ (or the folder containing se_reverb config/src, depending on your layout).
+### 6.1 Train the SE_Reverb model
 
+📍 Terminal location: open a terminal in experiments/awgn/
+From the `experiments/awgn` folder:
 
+```bash
+python -m src.train --data_dir ../../data --config ./configs/se_reverb.yaml --ckpt_dir ../../runs/se_reverb
+```
+
+### 6.2 Evaluate noise robustness
 ```bash
 python -m src.eval_noise_sweep --data_dir ../../data --config ./configs/se_reverb.yaml --ckpt ../../runs/se_reverb/se_reverb_best.pt
 ```
+
+### 6.3 Plot final comparison including SE_Reverb
 ```bash
 python experiments/plot_acc_snr.py --csv runs/acc_snr.csv --out runs/acc_snr.png --title "Baseline vs AWGN vs Curriculum vs se_reverb"
 ```
+
 ## 📊 Results Overview 
-```bash
-![Accuracy vs SNR for all experiments](runs/acc_snr.png)
-```
+The overall results demonstrate that model robustness depends strongly on the chosen training strategy.
+The clean baseline performs well in noise-free conditions but degrades quickly as SNR decreases.
+Training with Gaussian noise (AWGN) provides moderate improvements, with AWGN_v2 showing slightly better low-SNR performance than AWGN_v1.
+Curriculum learning consistently achieves the best accuracy across all noise levels, offering both high performance in clean conditions and strong resilience under severe noise.
+In contrast, the SE_Reverb model performs worst across all SNRs due to enhancement artifacts and reverberation mismatch, confirming that inappropriate augmentation can harm robustness.
+The combined accuracy–SNR plot clearly highlights these differences and visually illustrates the benefit of structured training over naive augmentation.
+Below is the final accuracy–SNR comparison plot including all experiments:
+
