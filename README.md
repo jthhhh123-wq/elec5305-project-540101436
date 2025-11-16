@@ -224,6 +224,7 @@ Clear improvement at moderate/high SNR (10–20 dB)
 
 Smooth and stable SNR–Accuracy curve
 
+## 📘 se_reverb Training
 ```bash
 python -m src.eval_noise_sweep --data_dir ../../data --config ./configs/se_reverb.yaml --ckpt ../../runs/se_reverb/se_reverb_best.pt
 ```
