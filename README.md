@@ -209,10 +209,8 @@ experiments/curriculum/configs/curriculum_train.yaml
 Run the curriculum-learning training:
 
 ```bash
-```bash
 conda activate kws
 python -m src.train --data_dir ../../data --config ./configs/curriculum_train.yaml --ckpt_dir ../../runs/curriculum
-```
 ```
 
 This will:
