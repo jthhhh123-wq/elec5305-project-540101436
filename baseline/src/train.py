@@ -112,7 +112,7 @@ def main(args):
         table.add_row("valid", f"{va_loss:.4f}", f"{va_acc:.4f}")
         console.print(table)
 
-        # Early stopping 检查
+        # Early stopping 
         if va_acc > best_val:
             best_val = va_acc
             torch.save(
@@ -120,7 +120,7 @@ def main(args):
                 os.path.join(args.ckpt_dir, "baseline_best.pt")
             )
             console.print(f"[green]Saved best checkpoint (val_acc={best_val:.4f})[/green]")
-            wait = 0  # 重置等待计数
+            wait = 0 
         else:
             wait += 1
             if wait > patience:
@@ -137,3 +137,4 @@ if __name__ == "__main__":
     p.add_argument("--snr_db", type=float, default=20.0)
     args = p.parse_args()
     main(args)
+
