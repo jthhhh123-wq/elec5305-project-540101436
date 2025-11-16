@@ -320,3 +320,37 @@ You can download or view the raw results here:
 Below is the final accuracy–SNR comparison plot including all experiments:
 The final accuracy–SNR comparison across all experiments (baseline, AWGN, AWGN_v2, curriculum, and SE+Reverb) is shown below:
 ![Accuracy–SNR Curve](runs/acc_snr.png)
+
+### 📘 Visualizing Noisy / Curriculum / SE-Reverb Spectrograms
+
+This project also includes an auxiliary script for visualizing how different processing methods
+(noise corruption, curriculum training stages, and SE-Reverb) affect the time-frequency structure
+of speech signals.
+
+This script generates three side-by-side spectrograms:
+
+Noisy speech (0 dB AWGN)
+
+Curriculum-style corrupted speech (–5 dB AWGN)
+
+SE + Reverb processed speech
+
+These plots help explain the qualitative differences mentioned in the report
+(e.g., transient consonant degradation, smoothing effects, reverberation smearing).
+
+▶ How to Run
+
+From the project root directory, run:
+```bash
+python plot_spectrogram_variants.py
+```
+### 📁 Output
+
+The script will save the figure to:
+
+```bash
+figures/spectrogram_noisy_curriculum_sereverb.png
+···
+
+📌 Example Output
+![Spectrogram Variants](figures/spectrogram_noisy_curriculum_sereverb.png)
