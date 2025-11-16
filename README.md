@@ -83,7 +83,11 @@ Results will be automatically saved to:
 ```bash
 runs/acc_snr.csv
 ```
-
+you can visualize the comparison:
+```bash
+cd ../../
+python experiments/plot_acc_snr.py --csv runs/acc_snr.csv --out runs/acc_snr.png --title "Baseline"
+```
 ## 🔊 Run AWGN Experiment
 This version adds Additive White Gaussian Noise (AWGN) during training for noise robustness.
 Train the AWGN model
