@@ -15,7 +15,21 @@ The **Google Speech Commands** dataset is too large to include in the release.
 
 Official dataset link:  
 https://storage.googleapis.com/download.tensorflow.org/data/speech_commands_v0.02.tar.gz
+## 📦 Extract the Dataset
 
+After downloading the .tar.gz file, extract it and place the folder into this directory，
+## 🔴 Important：Rename the outer folder speech_commands_v0.02 to SpeechCommands:
+
+```bash
+project_root/
+└── data/
+    └── SpeechCommands/speech_commands_v0.02/
+                       ├── yes/
+                       ├── no/
+                       ├── up/
+                       ├── down/
+                       ├── ...
+```
 ---
 
 This repository contains the code for an ELEC5305 project on **noise-robust keyword spotting (KWS)** using a lightweight **ConvMixer** architecture.  
