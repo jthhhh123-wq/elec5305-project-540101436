@@ -110,7 +110,7 @@ Framework: PyTorch (CUDA enabled)
 ### 1.4 Prepare dataset
 Download Google Speech Commands v0.02 and place it under:
 ```bash
-project_root/data/SpeechCommands/
+project_root/data/
 ```
 he scripts will automatically handle train/validation/test splits using torchaudio’s interface.
 
