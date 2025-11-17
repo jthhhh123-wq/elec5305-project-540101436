@@ -23,7 +23,8 @@ After downloading the .tar.gz file, extract it and place the folder into this di
 ```bash
 project_root/
 └── data/
-    └── SpeechCommands/speech_commands_v0.02/
+    └── SpeechCommands/
+                       speech_commands_v0.02/
                                             ├── yes/
                                             ├── no/
                                             ├── up/
