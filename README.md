@@ -24,11 +24,11 @@ After downloading the .tar.gz file, extract it and place the folder into this di
 project_root/
 └── data/
     └── SpeechCommands/speech_commands_v0.02/
-                       ├── yes/
-                       ├── no/
-                       ├── up/
-                       ├── down/
-                       ├── ...
+                                            ├── yes/
+                                            ├── no/
+                                            ├── up/
+                                            ├── down/
+                                            ├── ...
 ```
 ---
 
