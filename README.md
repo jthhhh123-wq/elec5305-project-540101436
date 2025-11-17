@@ -31,8 +31,8 @@ noise_robust_kws_convmixer/
 │   ├── curriculum/          # Curriculum learning
 │   └── se_reverb/           # Speech enhancement + reverb
 │
-├── data/                    # Place Speech Commands v0.02 here
-│   └── readme.md            # Dataset download instructions
+├── data/                   
+│   └── SpeechCommands/      # Place Speech Commands v0.02 here
 │
 ├── figures/                 # Project figures (mel-spectrogram, etc.)
 │
