@@ -1,10 +1,22 @@
 # 🎙️ Noise-Robust Keyword Spotting with ConvMixer
 
-## 🎬 Video Presentation
+## 🔽 Download Instructions
 
-My project video presentation is available here:
+### 📌 Code & Video Files
 
-👉 **[Click to watch the Video Presentation](https://github.com/jthhhh123-wq/noise_robust_kws_convmixer/releases/tag/video)**  
+👉 **Download both the code and the video files from this release:**  
+https://github.com/jthhhh123-wq/noise_robust_kws_convmixer/releases/tag/video
+
+---
+
+### 📁 Google Speech Commands Dataset
+The **Google Speech Commands** dataset is too large to include in the release.
+
+➡️ Please download it manually and place it into the `Data/` directory.
+
+Official dataset link:  
+https://storage.googleapis.com/download.tensorflow.org/data/speech_commands_v0.02.tar.gz
+
 
 This repository contains the code for an ELEC5305 project on **noise-robust keyword spotting (KWS)** using a lightweight **ConvMixer** architecture.  
 The system recognises short speech commands from the **Google Speech Commands v0.02** dataset under multiple noise conditions.
