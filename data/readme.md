@@ -14,12 +14,13 @@ After downloading the .tar.gz file, extract it and place the folder into this di
 ```bash
 project_root/
 └── data/
-    └── SpeechCommands/speech_commands_v0.02/
-                       ├── yes/
-                       ├── no/
-                       ├── up/
-                       ├── down/
-                       ├── ...
+    └── SpeechCommands/
+                      speech_commands_v0.02/
+                                           ├── yes/
+                                           ├── no/
+                                           ├── up/
+                                           ├── down/
+                                           ├── ...
 ```
 You should see ~100,000 audio files inside the SpeechCommands/ folder, organized by command labels.
 
@@ -27,18 +28,19 @@ You should see ~100,000 audio files inside the SpeechCommands/ folder, organized
 
 ```bash
 data/
-└── SpeechCommands/speech_commands_v0.02/
-                    ├── bed/
-                    ├── bird/
-                    ├── cat/
-                    ├── dog/
-                    ├── down/
-                    ├── eight/
-                    ├── five/
-                    ├── four/
-                    ├── go/
-                    ├── happy/
-                    ├── ...
+└── SpeechCommands/
+                   speech_commands_v0.02/
+                                       ├── bed/
+                                       ├── bird/
+                                       ├── cat/
+                                       ├── dog/
+                                       ├── down/
+                                       ├── eight/
+                                       ├── five/
+                                       ├── four/
+                                       ├── go/
+                                       ├── happy/
+                                       ├── ...
 ```
 
 ## ✔ Ready to Use
