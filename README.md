@@ -11,7 +11,7 @@ https://github.com/jthhhh123-wq/noise_robust_kws_convmixer/releases/tag/video
 ### 📁 Google Speech Commands Dataset
 The **Google Speech Commands** dataset is too large to include in the release.
 
-➡️ Please download it manually and place it into the `Data/` directory.
+➡️ Please download it manually and place it into the `data/` directory.
 
 Official dataset link:  
 https://storage.googleapis.com/download.tensorflow.org/data/speech_commands_v0.02.tar.gz
