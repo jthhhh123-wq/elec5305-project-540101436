@@ -291,8 +291,8 @@ This experiment evaluates a speech enhancement + reverberation strategy.
 
 ### 6.1 Train the SE_Reverb model
 
-📍 Terminal location: open a terminal in experiments/awgn/
-From the `experiments/awgn` folder:
+📍 Terminal location: open a terminal in experiments/se_reverb/
+From the `experiments/se_reverb` folder:
 
 ```bash
 conda activate kws
