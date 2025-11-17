@@ -13,7 +13,7 @@ from .utils import ensure_dir
 
 print(">>> EVAL NOISE SWEEP START <<<")
 
-# -------- Mel-Spectrogram（和 train.py 保持一致） --------
+# -------- Mel-Spectrogram --------
 mel_fn = torchaudio.transforms.MelSpectrogram(
     sample_rate=16000,
     n_fft=1024,
@@ -133,6 +133,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
