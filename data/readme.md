@@ -8,7 +8,8 @@ Download the official dataset from Google:
 
 ## 📦 Extract the Dataset
 
-After downloading the .tar.gz file, extract it and place the folder into this directory:
+After downloading the .tar.gz file, extract it and place the folder into this directory，
+## 🔴 Important：Rename the outer folder speech_commands_v0.02 to SpeechCommands:
 
 ```bash
 project_root/
