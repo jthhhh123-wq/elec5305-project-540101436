@@ -5,7 +5,7 @@
 ### 📌 Code & Video Files
 
 👉 **Download both the code and the video files from this release:**  
-https://github.com/jthhhh123-wq/noise_robust_kws_convmixer/releases/tag/video
+https://github.com/jthhhh123-wq/noise_robust_kws_convmixer/releases/tag/videonew
 
 
 ### 📁 Google Speech Commands Dataset
